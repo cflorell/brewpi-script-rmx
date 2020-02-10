@@ -62,6 +62,8 @@ import BrewPiProcess
 from backgroundserial import BackGroundSerial
 import BrewConvert
 
+from struct import pack
+
 if sys.version_info < (3, 7):  # Check needed software dependencies
     print("\nSorry, requires Python 3.7+.", file=sys.stderr)
     sys.exit(1)
@@ -707,7 +709,7 @@ try:
                 if cs['mode'] == "p":
                     profileFile = util.addSlash(
                         util.scriptPath()) + 'settings/tempProfile.csv'
-                    with file(profileFile, 'r') as prof:
+                    with open(profileFile, 'r') as prof:
                         cs['profile'] = prof.readline().split(",")[-1].rstrip("\n")
                 cs['dataLogging'] = config['dataLogging']
                 conn.send(json.dumps(cs).encode('utf-8'))
@@ -862,10 +864,10 @@ try:
                     shutil.copy(profileSrcFile, profileDestFile)
                     # For now, store profile name in header row (in an additional
                     # column)
-                    with file(profileDestFile, 'r') as original:
+                    with open(profileDestFile, 'r') as original:
                         line1 = original.readline().rstrip("\n")
                         rest = original.read()
-                    with file(profileDestFile, 'w') as modified:
+                    with open(profileDestFile, 'w') as modified:
                         modified.write(line1 + "," + value + "\n" + rest)
                 except IOError as e:  # Catch all exceptions and report back an error
                     error = "I/O Error(%d) updating profile: %s." % (e.errno,

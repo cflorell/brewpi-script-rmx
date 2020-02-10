@@ -870,12 +870,12 @@ try:
                     with open(profileDestFile, 'w') as modified:
                         modified.write(line1 + "," + value + "\n" + rest)
                 except IOError as e:  # Catch all exceptions and report back an error
-                    error = "I/O Error(%d) updating profile: %s." % (e.errno,
+                    error = b"I/O Error(%d) updating profile: %s." % (e.errno,
                                                                      e.strerror)
                     conn.send(error)
                     logMessage(error)
                 else:
-                    conn.send("Profile successfully updated.")
+                    conn.send(b"Profile successfully updated.")
                     if cs['mode'] is not 'p':
                         cs['mode'] = 'p'
                         bg_ser.write("j{mode:p}")
